@@ -1,6 +1,7 @@
 <script setup>
 import { Link } from "@inertiajs/inertia-vue3";
 import BreezeButton from "@/Components/PrimaryButton.vue";
+import { useForm } from "@inertiajs/inertia-vue3";
 
 const props = defineProps({
   data: {
@@ -20,6 +21,13 @@ const props = defineProps({
     required: true,
   },
 });
+
+const form = useForm();
+function destroy(id) {
+  if (confirm("Are you sure you want to Delete")) {
+    form.delete(route(`${props.resource}.destroy`, id));
+  }
+}
 
 const getContent = (row, name) => {
     let current = null

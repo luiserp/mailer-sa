@@ -12,6 +12,12 @@ use Illuminate\Support\Facades\DB;
 
 class EmailsController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      * @param  \Illuminate\Http\Request
@@ -24,19 +30,26 @@ class EmailsController extends Controller
 
         if ($user->is_admin) {
             $emails = DB::table('emails')->join('users', 'users.id', '=', 'emails.user_id')
-                ->orderBy("emails.".$order)
+                ->orderBy("emails." . $order)
                 ->when($request->input('search'), function ($query, $search) {
                     $query->where('topic', 'like', '%' . $search . '%')
                         ->OrWhere('addressee', 'like', '%' . $search . '%');
-                })->paginate(5);
-            // dd($emails);
+                })
+                ->select('emails.*', 'users.email')
+                ->paginate(5);
         } else {
-            $emails = DB::table('emails')->where('user_id', '=', $user->id)->orderBy($order)
+            $emails = DB::table('emails')->where('user_id', '=', $user->id)
+                ->join('users', 'users.id', '=', 'emails.user_id')
+                ->orderBy($order)
                 ->when($request->input('search'), function ($query, $search) {
                     $query->where('topic', 'like', '%' . $search . '%')
                         ->OrWhere('addressee', 'like', '%' . $search . '%');
-                })->paginate(5);
+                })
+                ->select('emails.*', 'users.email')
+                ->paginate(5);
         }
+        // dd($emails);
+
         return Inertia::render(
             'Emails/Index',
             [

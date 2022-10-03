@@ -16,24 +16,23 @@ const props = defineProps({
     type: Object,
     default: () => ({}),
   },
+  canUsers: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 onMounted(() => {
   console.log(props.users);
 });
 
-const form = useForm();
-function destroy(id) {
-  if (confirm("Are you sure you want to Delete")) {
-    form.delete(route("users.destroy", id));
-  }
-}
+
 </script>
 
 <template>
   <Head title="Users" />
 
-  <BreezeAuthenticatedLayout>
+  <BreezeAuthenticatedLayout :canUsers="canUsers">
     <template #header>
       <h2 class="text-xl font-semibold leading-tight text-gray-800">
         Users Index

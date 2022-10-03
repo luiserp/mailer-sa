@@ -6,6 +6,7 @@ use Inertia\Inertia;
 
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\EmailsController;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,15 +22,9 @@ use App\Http\Controllers\EmailsController;
 Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
     ]);
-});
+})->name('home');
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::resource('users', UsersController::class);
 

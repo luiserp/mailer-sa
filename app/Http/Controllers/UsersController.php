@@ -7,10 +7,18 @@ use Inertia\Inertia;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Http\Requests\UserRequest;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Route;
 
 class UsersController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware(['auth', 'IsAdmin']);
+    }
+
     /**
      * Display a listing of the resource.
      * @param  \Illuminate\Http\Request
@@ -36,7 +44,7 @@ class UsersController extends Controller
         return Inertia::render(
             'Users/Index',
             [
-                'users' => $users
+                'users' => $users,
             ]
         );
     }
