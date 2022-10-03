@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserEditRequest;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Http\Requests\UserRequest;
+use Illuminate\Support\Facades\Hash;
 
 class UsersController extends Controller
 {
@@ -25,6 +27,8 @@ class UsersController extends Controller
                     ->OrWhere('cedula', 'like', '%' . $search . '%')
                     ->OrWhere('phone_number', 'like', '%' . $search . '%');
             })->paginate(5);
+
+        // dd($users);
 
         foreach ($users as $user) {
             $user->load('city');
@@ -58,6 +62,7 @@ class UsersController extends Controller
     public function store(UserRequest $request)
     {
         $validated = $request->validated();
+        $validated['password'] = Hash::make($validated['password']);
         User::create($validated);
         return redirect()->route('users.index')->with('message', 'User Created Successfully');
     }
@@ -101,11 +106,11 @@ class UsersController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\UserEditRequest  $request
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(UserRequest $request, User $user)
+    public function update(UserEditRequest $request, User $user)
     {
         $validated = $request->safe()->except(['cedula', 'email']);
         $user->fill($validated);

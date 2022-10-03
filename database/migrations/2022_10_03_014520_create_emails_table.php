@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('topic');
             $table->string('addressee');
-            $table->string('content');
+            $table->text('content');
             $table->foreignId('user_id')
                 ->constrained('users')
                 ->onUpdate('cascade')

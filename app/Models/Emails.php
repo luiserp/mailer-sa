@@ -13,6 +13,8 @@ class Emails extends Model
         'topic',
         'addressee',
         'content',
+        'user_id',
+        'status',
     ];
 
     protected $hidden = [

@@ -12,32 +12,30 @@ import SearchInput from "@/Components/SearchInput.vue";
 import { onMounted, ref, watch } from "vue";
 
 const props = defineProps({
-  users: {
+  emails: {
     type: Object,
     default: () => ({}),
   },
 });
 
 onMounted(() => {
-  console.log(props.users);
+  console.log(props.emails);
 });
-
-const form = useForm();
-function destroy(id) {
-  if (confirm("Are you sure you want to Delete")) {
-    form.delete(route("users.destroy", id));
-  }
-}
 </script>
 
 <template>
-  <Head title="Users" />
+  <Head title="Emails" />
 
   <BreezeAuthenticatedLayout>
     <template #header>
-      <h2 class="text-xl font-semibold leading-tight text-gray-800">
-        Users Index
-      </h2>
+      <div class="flex justify-between">
+        <h2 class="text-xl font-semibold leading-tight text-gray-800">
+          Emails
+        </h2>
+        <Link :href="route('emails.create')">
+            <BreezeButton>Send Email</BreezeButton></Link
+          >
+      </div>
     </template>
 
     <div class="py-8">
@@ -60,30 +58,25 @@ function destroy(id) {
         </div>
         <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
           <div class="p-6 bg-white border-b border-gray-200">
-            <div v-if="users.data.length > 0">
+            <div v-if="emails.data.length > 0">
               <div class="mb-2 flex justify-between">
-                <Link :href="route('users.create')">
-                  <BreezeButton>Add User</BreezeButton></Link
-                >
-
-                <search-input resourceUrl="/users"></search-input>
+                <search-input resourceUrl="/emails"></search-input>
               </div>
 
               <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
                 <Table
-                  :data="users"
-                  resource="users"
-                  :actions="['edit', 'delete']"
+                  :data="emails"
+                  resource="emails"
+                  :actions="['show']"
                   :columns="[
-                    { key: 'name', name: 'Name' },
-                    { key: 'email', name: 'Email' },
-                    { key: 'phone_number', name: 'Phone Number' },
-                    { key: 'cedula', name: 'Cedula' },
-                    { key: 'city|name', name: 'City', order: 'city_id' },
+                    { key: 'topic', name: 'Topic' },
+                    { key: 'email', name: 'Sender' },
+                    { key: 'addressee', name: 'Addressee' },
+                    { key: 'status', name: 'Status' },
                   ]"
                 />
 
-                <Pagination :data="users" />
+                <Pagination :data="emails" />
               </div>
             </div>
             <h1 v-else>Nothing Yet!!!</h1>

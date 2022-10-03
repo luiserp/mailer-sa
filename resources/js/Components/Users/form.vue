@@ -48,6 +48,7 @@ const form = useForm({
 });
 
 const submit = () => {
+  console.log(form);
   if (editing) form.put(route("users.update", props.user.id));
   else form.post(route("users.store"));
 };
@@ -83,7 +84,7 @@ const getCities = async (refresh = true) => {
 };
 
 onMounted(async () => {
-  //   console.log(props.user, selected_country.value, selected_state.value);
+    // console.log(props.user, selected_country.value, selected_state.value);
   getCountries(false);
   if (props.user.city.state.country.id != "") {
     getStates(false);
@@ -150,7 +151,7 @@ onMounted(async () => {
       </div>
     </div>
     <!-- Password -->
-    <div class="mb-6">
+    <div class="mb-6" v-if="!editing">
       <label
         for="Password"
         class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
@@ -177,7 +178,7 @@ onMounted(async () => {
       </div>
     </div>
     <!-- Repit Password -->
-    <div class="mb-6">
+    <div class="mb-6" v-if="!editing">
       <label
         for="password_confirmation"
         class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"

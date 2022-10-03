@@ -3,17 +3,46 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Inertia\Inertia;
+
+use App\Http\Requests\EmailRequest;
+use App\Models\Emails;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class EmailsController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
+     * @param  \Illuminate\Http\Request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $user = Auth::user();
+        $order = $request->get('order', 'id');
+
+        if ($user->is_admin) {
+            $emails = DB::table('emails')->join('users', 'users.id', '=', 'emails.user_id')
+                ->orderBy("emails.".$order)
+                ->when($request->input('search'), function ($query, $search) {
+                    $query->where('topic', 'like', '%' . $search . '%')
+                        ->OrWhere('addressee', 'like', '%' . $search . '%');
+                })->paginate(5);
+            // dd($emails);
+        } else {
+            $emails = DB::table('emails')->where('user_id', '=', $user->id)->orderBy($order)
+                ->when($request->input('search'), function ($query, $search) {
+                    $query->where('topic', 'like', '%' . $search . '%')
+                        ->OrWhere('addressee', 'like', '%' . $search . '%');
+                })->paginate(5);
+        }
+        return Inertia::render(
+            'Emails/Index',
+            [
+                'emails' => $emails
+            ]
+        );
     }
 
     /**
@@ -23,29 +52,44 @@ class EmailsController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render(
+            'Emails/Create'
+        );
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  App\Http\Requests\EmailRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(EmailRequest $request)
     {
-        //
+        $validated = $request->validated();
+        $user = Auth::user();
+        $data = array_merge($validated, [
+            'user_id' => $user->id,
+            'status' => 'pending'
+        ]);
+
+        Emails::create($data);
+        return redirect()->route('emails.index')->with('message', 'The Email was sent');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Emails  $email
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Emails $email)
     {
-        //
+        return Inertia::render(
+            'Emails/Show',
+            [
+                'email' => $email
+            ]
+        );
     }
 
     /**
