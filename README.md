@@ -7,9 +7,22 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
+## Instalación:
+* Debe configuarar la conexión con la base de datos en el archivo .env
+* Debe configuarar la conexión con el servidor de mensages en el archivo .env, para el ejercicio se utiluzó Mailtrap
+1. `composer install`
+2. `npm install`
+3. `php artisan migrate`
+4. `php artisan db:seed`
+
+## Ejecución:
+1. `npm run dev`
+2. `php artisan serve`
+    - [Open Browser](http://127.0.0.1:8000)
+3. Para procesar la cola de mensages: `php artisan queue:work`
+
 ## PRUEBA TÉCNICA LARAVEL - FullStack DEVELOPER
 Este pequeño documento describe un desafío de programación que quisiéramos que nos ayudes a desarrollar, para conocer mejor tus habilidades y entender si tu conocimiento y experiencia son adecuados para lo que estamos buscando. 
-
 
 ### Requerimiento general:
 - La empresa ficticia “MAILER S.A.” desea realizar una aplicación web que permita administrar la información de sus usuarios, cada usuario podrá realizar el envío de emails, por seguridad de la información el usuario tendrá que autenticarse en la aplicación con sus credenciales, para esto el personal a cargo del proyecto ha identificado los siguientes requerimientos:
