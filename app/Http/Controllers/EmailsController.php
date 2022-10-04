@@ -6,9 +6,13 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 use App\Http\Requests\EmailRequest;
+use App\Jobs\SendEmail;
+use App\Jobs\SendMailsAndChangeState;
+use App\Mail\EmailForQueuing;
 use App\Models\Emails;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class EmailsController extends Controller
 {
@@ -85,7 +89,10 @@ class EmailsController extends Controller
             'status' => 'pending'
         ]);
 
-        Emails::create($data);
+        $email = Emails::create($data);
+
+        SendMailsAndChangeState::dispatch($user, $email);
+
         return redirect()->route('emails.index')->with('message', 'The Email was sent');
     }
 
