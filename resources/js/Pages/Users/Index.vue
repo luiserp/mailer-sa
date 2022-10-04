@@ -25,8 +25,6 @@ const props = defineProps({
 onMounted(() => {
   console.log(props.users);
 });
-
-
 </script>
 
 <template>
@@ -59,7 +57,7 @@ onMounted(() => {
         </div>
         <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
           <div class="p-6 bg-white border-b border-gray-200">
-            <div v-if="users.data.length > 0">
+            <div>
               <div class="mb-2 flex justify-between">
                 <Link :href="route('users.create')">
                   <BreezeButton>Add User</BreezeButton></Link
@@ -68,7 +66,10 @@ onMounted(() => {
                 <search-input resourceUrl="/users"></search-input>
               </div>
 
-              <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+              <div
+                class="relative overflow-x-auto shadow-md sm:rounded-lg"
+                v-if="users.data.length > 0"
+              >
                 <Table
                   :data="users"
                   resource="users"
@@ -84,8 +85,8 @@ onMounted(() => {
 
                 <Pagination :data="users" />
               </div>
+              <h1 v-else>Nothing to Show</h1>
             </div>
-            <h1 v-else>Nothing Yet!!!</h1>
           </div>
         </div>
       </div>

@@ -165,6 +165,21 @@ const showingNavigationDropdown = ref(false);
             >
               Home
             </ResponsiveNavLink>
+
+            <ResponsiveNavLink
+              :href="route('emails.index')"
+              :active="route().current('emails.index')"
+            >
+              Emails
+            </ResponsiveNavLink>
+
+            <ResponsiveNavLink v-if="$page.props.auth.user.is_admin"
+              :href="route('users.index')"
+              :active="route().current('users.index')"
+            >
+              Users
+            </ResponsiveNavLink>
+            
           </div>
 
           <!-- Responsive Settings Options -->

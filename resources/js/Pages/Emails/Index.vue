@@ -33,8 +33,8 @@ onMounted(() => {
           Emails
         </h2>
         <Link :href="route('emails.create')">
-            <BreezeButton>Send Email</BreezeButton></Link
-          >
+          <BreezeButton>Send Email</BreezeButton></Link
+        >
       </div>
     </template>
 
@@ -58,12 +58,15 @@ onMounted(() => {
         </div>
         <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
           <div class="p-6 bg-white border-b border-gray-200">
-            <div v-if="emails.data.length > 0">
+            <div>
               <div class="mb-2 flex justify-between">
                 <search-input resourceUrl="/emails"></search-input>
               </div>
 
-              <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+              <div
+                v-if="emails.data.length > 0"
+                class="relative overflow-x-auto shadow-md sm:rounded-lg"
+              >
                 <Table
                   :data="emails"
                   resource="emails"
@@ -78,8 +81,8 @@ onMounted(() => {
 
                 <Pagination :data="emails" />
               </div>
+              <h1 v-else>Nothing to Show</h1>
             </div>
-            <h1 v-else>Nothing Yet!!!</h1>
           </div>
         </div>
       </div>

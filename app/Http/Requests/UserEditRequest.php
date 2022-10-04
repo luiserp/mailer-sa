@@ -27,6 +27,7 @@ class UserEditRequest extends FormRequest
             'name' => 'required|string|max:100',
             'email' => 'required|string|max:255|email',
             'cedula' => 'required|max:11',
+            'phone_number' => 'nullable|size:10',
             'birthday' => 'required|date|before:-18 years',
             'city_id' => 'required'
         ];
