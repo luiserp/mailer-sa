@@ -9,8 +9,6 @@ import Pagination from "@/Components/Pagination.vue";
 import Table from "@/Components/Table.vue";
 import SearchInput from "@/Components/SearchInput.vue";
 
-import { onMounted, ref, watch } from "vue";
-
 const props = defineProps({
   users: {
     type: Object,
@@ -22,9 +20,6 @@ const props = defineProps({
   },
 });
 
-onMounted(() => {
-  console.log(props.users);
-});
 </script>
 
 <template>

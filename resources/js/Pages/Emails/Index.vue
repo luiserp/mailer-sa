@@ -9,7 +9,7 @@ import Pagination from "@/Components/Pagination.vue";
 import Table from "@/Components/Table.vue";
 import SearchInput from "@/Components/SearchInput.vue";
 
-import { onMounted, ref, watch } from "vue";
+import { ref } from "vue";
 
 const props = defineProps({
   emails: {
@@ -18,9 +18,6 @@ const props = defineProps({
   },
 });
 
-onMounted(() => {
-  console.log(props.emails);
-});
 </script>
 
 <template>
@@ -73,7 +70,7 @@ onMounted(() => {
                   :actions="['show']"
                   :columns="[
                     { key: 'topic', name: 'Topic' },
-                    { key: 'email', name: 'Sender' },
+                    { key: 'email', name: 'Sender', order: 'user_id'},
                     { key: 'addressee', name: 'Addressee' },
                     { key: 'status', name: 'Status' },
                   ]"

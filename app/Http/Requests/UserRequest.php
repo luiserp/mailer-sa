@@ -26,7 +26,7 @@ class UserRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:100',
-            'email' => 'required|string|max:255|email',
+            'email' => 'unique:users,email|required|string|max:255|email',
             'password' => ['required', 'confirmed', Password::min(8)->mixedCase()->numbers()->symbols()],
             'phone_number' => 'nullable|size:10',
             'cedula' => 'required|max:11',
